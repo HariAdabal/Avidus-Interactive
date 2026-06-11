@@ -50,7 +50,7 @@ const Register = () => {
           border: "1px solid #e2e8f0",
           padding: "32px",
           width: "100%",
-          maxWidth: "380px",
+          maxWidth: "480px",
           boxShadow: "0 4px 24px rgba(127,119,221,0.10)",
         }}
       >

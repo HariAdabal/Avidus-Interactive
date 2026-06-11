@@ -106,7 +106,7 @@ const UserDashboard = () => {
         padding: "30px 16px",
       }}
     >
-      <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "100%", margin: "0 auto", padding: "0 16px" }}>
         <div
           style={{
             background: "linear-gradient(135deg, #1D9E75, #378ADD)",
