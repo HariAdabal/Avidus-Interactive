@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { IconUserPlus } from "@tabler/icons-react";
 
+const API = "https://avidus-interactive-8gut.onrender.com";
+
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -16,14 +18,11 @@ const Register = () => {
     setError("");
     setSuccess("");
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password, role }),
-        },
-      );
+      const response = await fetch(`${API}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password, role }),
+      });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to register");
       setSuccess("Registration successful! Redirecting to login...");
@@ -84,7 +83,6 @@ const Register = () => {
             Join and start managing tasks
           </p>
         </div>
-
         {error && (
           <div
             style={{
@@ -115,7 +113,6 @@ const Register = () => {
             {success}
           </div>
         )}
-
         <form
           onSubmit={handleSubmit}
           style={{ display: "flex", flexDirection: "column", gap: "14px" }}
@@ -254,7 +251,6 @@ const Register = () => {
             Create account
           </button>
         </form>
-
         <p
           style={{
             textAlign: "center",

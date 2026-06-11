@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { IconLock } from "@tabler/icons-react";
 
+const API = "https://avidus-interactive-8gut.onrender.com";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,14 +16,11 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      const response = await fetch(`${API}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Something went wrong");
       login(data.user, data.token);
@@ -83,7 +82,6 @@ const Login = () => {
             Sign in to your account
           </p>
         </div>
-
         {error && (
           <div
             style={{
@@ -99,7 +97,6 @@ const Login = () => {
             {error}
           </div>
         )}
-
         <form
           onSubmit={handleSubmit}
           style={{ display: "flex", flexDirection: "column", gap: "14px" }}
@@ -180,7 +177,6 @@ const Login = () => {
             Sign in
           </button>
         </form>
-
         <p
           style={{
             textAlign: "center",

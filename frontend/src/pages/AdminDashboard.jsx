@@ -11,6 +11,8 @@ import {
   IconFileDescription,
 } from "@tabler/icons-react";
 
+const API = "https://avidus-interactive-8gut.onrender.com";
+
 const AdminDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
@@ -23,37 +25,33 @@ const AdminDashboard = () => {
 
   const fetchAdminData = async () => {
     try {
-      const usersRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/users`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const usersRes = await fetch(`${API}/api/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const usersData = await usersRes.json();
       if (!usersRes.ok)
         throw new Error(usersData.error || "Failed to fetch users");
       setUsers(usersData);
 
-      const tasksRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/tasks`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const tasksRes = await fetch(`${API}/api/admin/tasks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const tasksData = await tasksRes.json();
       if (!tasksRes.ok)
         throw new Error(tasksData.error || "Failed to fetch tasks");
       setTasks(tasksData);
 
-      const logsRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/logs`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const logsRes = await fetch(`${API}/api/admin/logs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const logsData = await logsRes.json();
       if (!logsRes.ok)
         throw new Error(logsData.error || "Failed to fetch logs");
       setLogs(logsData);
 
-      const analyticsRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/analytics`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const analyticsRes = await fetch(`${API}/api/admin/analytics`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const analyticsData = await analyticsRes.json();
       if (!analyticsRes.ok)
         throw new Error(analyticsData.error || "Failed to fetch analytics");
@@ -70,17 +68,14 @@ const AdminDashboard = () => {
   const handleToggleUserStatus = async (id, currentStatus) => {
     const nextStatus = currentStatus === "Active" ? "Inactive" : "Active";
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}/status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status: nextStatus }),
+      const res = await fetch(`${API}/api/admin/users/${id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({ status: nextStatus }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update status");
       fetchAdminData();
@@ -92,13 +87,10 @@ const AdminDashboard = () => {
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const res = await fetch(`${API}/api/admin/users/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to delete user");
       fetchAdminData();
