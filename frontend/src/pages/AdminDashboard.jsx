@@ -19,40 +19,40 @@ const AdminDashboard = () => {
   const [analytics, setAnalytics] = useState(null);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("analytics");
-
   const token = localStorage.getItem("token");
 
   const fetchAdminData = async () => {
     try {
-      const usersRes = await fetch("http://localhost:5000/api/admin/users", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const usersRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/users`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
       const usersData = await usersRes.json();
       if (!usersRes.ok)
         throw new Error(usersData.error || "Failed to fetch users");
       setUsers(usersData);
 
-      const tasksRes = await fetch("http://localhost:5000/api/admin/tasks", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const tasksRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/tasks`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
       const tasksData = await tasksRes.json();
       if (!tasksRes.ok)
         throw new Error(tasksData.error || "Failed to fetch tasks");
       setTasks(tasksData);
 
-      const logsRes = await fetch("http://localhost:5000/api/admin/logs", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const logsRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/logs`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
       const logsData = await logsRes.json();
       if (!logsRes.ok)
         throw new Error(logsData.error || "Failed to fetch logs");
       setLogs(logsData);
 
       const analyticsRes = await fetch(
-        "http://localhost:5000/api/admin/analytics",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
+        `${import.meta.env.VITE_API_URL}/api/admin/analytics`,
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       const analyticsData = await analyticsRes.json();
       if (!analyticsRes.ok)
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
     const nextStatus = currentStatus === "Active" ? "Inactive" : "Active";
     try {
       const res = await fetch(
-        `http://localhost:5000/api/admin/users/${id}/status`,
+        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}/status`,
         {
           method: "PUT",
           headers: {
@@ -92,10 +92,13 @@ const AdminDashboard = () => {
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to delete user");
       fetchAdminData();

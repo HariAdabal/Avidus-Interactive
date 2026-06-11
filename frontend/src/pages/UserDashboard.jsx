@@ -17,12 +17,11 @@ const UserDashboard = () => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [editingTask, setEditingTask] = useState(null);
-
   const token = localStorage.getItem("token");
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -41,7 +40,7 @@ const UserDashboard = () => {
     e.preventDefault();
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,10 +60,13 @@ const UserDashboard = () => {
 
   const handleDeleteTask = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to delete task");
       fetchTasks();
@@ -75,18 +77,21 @@ const UserDashboard = () => {
 
   const handleUpdateTask = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: editingTask.title,
+            description: editingTask.description,
+            status: editingTask.status,
+          }),
         },
-        body: JSON.stringify({
-          title: editingTask.title,
-          description: editingTask.description,
-          status: editingTask.status,
-        }),
-      });
+      );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update task");
       setEditingTask(null);
